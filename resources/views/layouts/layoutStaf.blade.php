@@ -17,11 +17,11 @@
             </div>
             <div class="px-[2px] rounded-lg bg-primary-600 inline"></div>
             <div class="bg-primary-900 hover:bg-primary-800 py-2 px-3 inline">
-                <a href="{{ url('/datamhs') }}">Data Mahasiswa</a>
+                <a href="{{ url('/dataMahasiswa') }}">Data Mahasiswa</a>
             </div>
             <div class="px-[2px] rounded-lg bg-primary-600 inline"></div>
             <div class="bg-primary-900 hover:bg-primary-800 py-2 px-3 inline">
-                <a href="{{ url('/detailPelanggaran') }}">Monitor</a>
+                <a href="{{ url('/detailPelanggaranStaf') }}">Monitor</a>
             </div>
         </div>
         <div class="container mx-auto mb-10">

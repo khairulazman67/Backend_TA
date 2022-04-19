@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,14 +8,17 @@
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
     <title>Beranda</title>
 </head>
+
+
 <body>
+
     <div class="container mx-auto mb-10">
         <!-- tulisan atas -->
         <div class="mt-4">
-            <div class="flex justify-center text-secondary-900 font-bold text-2xl">
+            <div class="flex justify-center text-secondary-900 font-bold text-3xl">
                 Sistem Deteksi Physical Distancing dan Wajah Bermasker
             </div>
-            <div class="flex justify-center text-primary-900 font-bold text-xl">
+            <div class="flex justify-center text-primary-900 font-bold text-2xl">
                 Menggunakan Metode You Only Look Once (YOLO)
             </div>
         </div>
@@ -42,17 +46,38 @@
         </div>
 
         <!-- table -->
-        <div class="w-full h-auto shadow-xl shadow-gray-400 mt-10 ">
+        <div class="w-full h-auto shadow-xl shadow-gray-400 mt-10 rounded-xl">
             <div class="bg-secondary-900 rounded-t-xl px-10 py-3">
                 <h1 class="font-bold text-white text-xl">Data Pelanggar Pengguna Masker</h1>
             </div>
             <!-- table -->
+            @if (session()->has('success'))
+                <div class="flex justify-between mx-2 my-2 bg-green-600 text-white rounded-lg h-10 text-lg px-5">
+                    <p class="my-auto">{{session()->get('success')}}</p>
+                    <i class="my-auto hover:text-gray-600 fas fa-times alert-del"></i>
+                </div>
+            @elseif (session()->has('failed'))
+                <div class="flex justify-between mx-2 my-2 bg-red-500 text-white rounded-lg h-10 text-lg px-5">
+                    <p class="my-auto">{{session()->get('failed')}}</p>
+                    <i class="my-auto hover:text-gray-600 fas fa-times alert-del"></i>
+                </div>        
+            @endif
+            
+            
             <div class="my-5 pb-5 flex justify-center mx-auto">
                 <div class="flex flex-col">
                     <div class="w-full">
                         <div class="border-b border-gray-200 shadow ">
+                            <form action="/cariPelanggar" method="post" class="mb-5">
+                                @csrf
+                                <input type="text" name="keyword"
+                                    class="border-solid border-2 border-gray-800 rounded-xl h-9 w-60 px-3"
+                                    placeholder="Cari Data pelanggaran .." value="{{ old('keyword') }}">
+                                <button type="submit"
+                                    class="bg-primary-800 w-14 h-9 text-lg font-semibold rounded-lg text-white">Cari</button>
+                            </form>
                             <table class="divide-y divide-gray-300 ">
-                                <thead class="bg-gray-900 text-white rounded-xl">
+                                <thead class="bg-gray-900 text-white">
                                     <tr>
                                         <th class="px-6 py-2 text-xs ">
                                             No
@@ -67,40 +92,52 @@
                                             Waktu Pelanggaran
                                         </th>
                                         <th class="px-10 py-2 text-xs ">
+                                            Hapus 
+                                        </th>
+                                        <th class="px-10 py-2 text-xs ">
                                             Detail
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-300 text-black">
+                                    <?php $j = ($data->currentpage()-1)* $data->perpage() + 1;?>
                                     @foreach ($data as $i=>$dat)
-                                        <tr class="whitespace-nowrap">
-                                            <td class="px-6 py-4 text-sm">
-                                                {{$i+1}}
-                                            </td>
-                                            <td class="px-6 py-4 text-sm">
-                                                {{$dat->mahasiswa->nama}}
-                                            </td>
-                                            <td class="px-6 py-4 text-sm">
-                                                {{$dat->mahasiswa->NIM}}
-                                            </td>
-                                            <td class="px-6 py-4 text-sm">
-                                                {{$dat->created_at->format('l, d F Y')}}
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <a href="#" class="px-6 py-1 text-sm text-white bg-primary-800 hover:bg-primary-900 rounded-lg">Detail</a>
-                                            </td>
-                                        </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td class="px-6 py-4 text-xl">
+                                            {{$j++}}
+                                        </td>
+                                        <td class="px-6 py-4 text-xl">
+                                            {{$dat->mahasiswa->nama}}
+                                        </td>
+                                        <td class="px-6 py-4 text-xl">
+                                            {{$dat->mahasiswa->NIM}}
+                                        </td>
+                                        <td class="px-6 py-4 text-xl">
+                                            {{$hari.', '.$tanggal}}
+                                        </td>
+                                        <td class="px-6 py-4 text-xl">
+                                            {{$dat->created_at->format('h:i:s A')}}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <form action="{{url('detailBer/'.$dat->id)}}" method="POST">
+                                                @csrf
+                                                <button
+                                                    class="px-6 py-1 text-sm text-white bg-primary-800 hover:bg-primary-900 rounded-lg">Detail</button>
+                                            </form>
+                                        </td>
+                                    </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+                            {{ $data->links('pagination::tailwind') }}
                         </div>
                     </div>
-                </div>
+                </div>   
             </div>
         </div>
         <script>
             window.setTimeout("waktu()", 1000);
-        
+
             function waktu() {
                 var waktu = new Date();
                 setTimeout("waktu()", 1000);
@@ -108,12 +145,13 @@
                     .getSeconds();
             }
             window.setTimeout("tanggal()");
-        
+
             function tanggal() {
                 var tanggallengkap = new String();
                 var namahari = ("Minggu Senin Selasa Rabu Kamis Jumat Sabtu");
                 namahari = namahari.split(" ");
-                var namabulan = ("Januari Februari Maret April Mei Juni Juli Agustus September Oktober November Desember");
+                var namabulan = (
+                    "Januari Februari Maret April Mei Juni Juli Agustus September Oktober November Desember");
                 namabulan = namabulan.split(" ");
                 var tgl = new Date();
                 var hari = tgl.getDay();
@@ -123,8 +161,14 @@
                 tanggallengkap = namahari[hari] + ", " + tanggal + " " + namabulan[bulan] + " " + tahun;
                 document.getElementById("tanggal").innerHTML = tanggallengkap
             }
+            var alert_del = document.querySelectorAll('.alert-del');
+            alert_del.forEach((x) =>
+                x.addEventListener('click', function () {
+                    x.parentElement.classList.add('hidden');
+                })
+            );
         </script>
     </div>
 </body>
+
 </html>
-    

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BerandaController;
+use App\Http\Controllers\StafController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,22 +13,26 @@ use App\Http\Controllers\BerandaController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', [BerandaController::class, 'index'])->name('home');
-
-Route::get('/login', function () {
-    
+//Beranda
+Route::get('/', [BerandaController::class, 'index']);
+Route::post('/cariPelanggar', [BerandaController::class, 'cariPelanggar']);
+Route::post('/detailBer/{data}', [BerandaController::class,'getDetail']);
+Route::get('/login', function () {    
     return view('login');
 });
 
-Route::get('/berandaStaf', function () {
-    return view('pageStaf/berandaStaf');
+//middleware staf
+Route::get('/berandaStaf',[StafController::class, 'index']);
+Route::post('/detailPelStaf/{data}',[StafController::class, 'getDetailPelanggaran']);
+Route::post('/cariPelanggarStaf', [StafController::class, 'cariPelanggar']);
+Route::get('/dataMahasiswa', [StafController::class, 'viewDataMahasiswa']);
+Route::post('cariMahasiswaStaf',[StafController::class,'cariMahasiswa']);
+
+
+Route::get('/detail', function () {
+    return view('detail');
 });
 
-Route::get('/datamhs', function () {
-    return view('pageStaf/dataMhs');
-});
 
-Route::get('/detailPelanggaran', function () {
-    return view('pageStaf/detailPelanggaran');
-});
+
 

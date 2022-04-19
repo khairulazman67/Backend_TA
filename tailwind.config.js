@@ -2,9 +2,11 @@ module.exports = {
   content: [
     "./resources/**/*.blade.php",
     "./resources/**/*.js",
-    "./resources/**/*.vue"
+    "./resources/**/*.vue",
+    './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
   ],
   theme: {
+    
     extend: {
       colors: {
         primary:{
@@ -21,5 +23,9 @@ module.exports = {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    // require('tailwindcss-plugins/pagination')({
+    //     /* Customizations here... */
+    // }),
+  ],
 }
