@@ -88,7 +88,7 @@
                                             <div class="text-xl text-center">{{$dat->nm_kelas}}</div>
                                         </td>
                                         <td class="px-6 py-4 text-center">
-                                            <a href="#" class="px-6 py-1 text-sm text-white bg-yellow-500 hover:bg-yellow-600 rounded-lg">Edit</a>
+                                            <a href="#" class="px-6 py-1 text-sm text-white bg-yellow-500 hover:bg-yellow-600 rounded-lg" id="delete-btn">Edit</a>
                                         </td>
                                         <td class="px-6 py-4">
                                             <a href="#" class="px-6 py-1 text-sm text-white bg-red-600 hover:bg-red-700 rounded-lg">Hapus</a>
@@ -102,6 +102,25 @@
                 </div>
             </div>
         </div>
+        <div class="bg-black bg-opacity-50 absolute inset-0 hidden justify-center items-center" id="overlay">
+            <div class="bg-gray-200 max-w-sm  rounded-lg shadow-xl text-gray-800 overflow-hidden">
+                <div class="items-center bg-secondary-900 text-white">
+                    <div class="py-2 px-4 flex justify-between">
+                        <h4 class="text-xl font-bold">Hapus Data Mahasiswa</h4>
+                        <i class="fa-solid fa-xmark hover:text-gray-300 my-auto" id="close-modal"></i>
+                    </div>
+                </div>
+                <div class="px-4 mb-4">
+                    <div class="mt-2 text-lg">
+                        <p>Apakah anda yakin ingin menghapus data?</p>
+                    </div>
+                    <div class="mt-3 flex justify-end space-x-3">
+                        <button class="px-3 py-1 rounded hover:bg-red-300 hover:bg-opacity-50 hover:text-red-900" id="close-modal">Cancel</button>
+                        <button class="px-3 py-1 bg-red-800 text-gray-200 hover:bg-red-600 rounded" >Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <script>
         var alert_del = document.querySelectorAll('.alert-del');
@@ -110,5 +129,21 @@
                     x.parentElement.classList.add('hidden');
                 })
             );
+        
+        window.addEventListener('DOMContentLoaded', () =>{
+            const overlay = document.querySelector('#overlay')
+            const deleteBtn = document.querySelector('#delete-btn')
+            const closeBtn = document.querySelector('#close-modal')
+
+            const toggleModal = () => {
+                overlay.classList.toggle('hidden')
+                overlay.classList.toggle('flex')
+            }
+
+            deleteBtn.addEventListener('click', toggleModal)
+
+            closeBtn.addEventListener('click', toggleModal)
+        })
+
     </script>
 @endsection

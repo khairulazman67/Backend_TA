@@ -126,4 +126,12 @@ class StafController extends Controller
         }
         return view('pageStaf/dataMahasiswa',['DataMahasiswa'=>$dataMahasiswa]);
     }
+    public function hapusPelanggaran($data){
+        $delete = DB::table('pelanggarans')->where('id','=',$data)->delete();
+        if($delete){
+            return redirect('/berandaStaf')->with('success', 'Data berhasil dihapus');
+        }else{
+            return redirect('/berandaStaf')->with('error', 'Terjadi kesalahan saat menghapus data');
+        }
+    }
 }

@@ -27,7 +27,7 @@ Route::post('/detailPelStaf/{data}',[StafController::class, 'getDetailPelanggara
 Route::post('/cariPelanggarStaf', [StafController::class, 'cariPelanggar']);
 Route::get('/dataMahasiswa', [StafController::class, 'viewDataMahasiswa']);
 Route::post('cariMahasiswaStaf',[StafController::class,'cariMahasiswa']);
-
+Route::post('staf/hapusPelanggaran/{data}',[StafController::class,'hapusPelanggaran']);
 
 Route::get('/detail', function () {
     return view('detail');

@@ -121,7 +121,7 @@
                                             <button
                                                 class="px-6 py-1 text-sm text-white bg-primary-800 hover:bg-primary-900 rounded-lg">Detail</button>
                                         </form>
-                                        <form action="{{url('detailPelStaf/'.$dat->id)}}" method="POST">
+                                        <form action="{{url('staf/hapusPelanggaran/'.$dat->id)}}" method="POST">
                                             @csrf
                                             <button
                                                 class="px-6 py-1 text-sm text-white bg-red-700 ml-2 hover:bg-red-800 rounded-lg">Hapus</button>
