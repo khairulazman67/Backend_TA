@@ -63,11 +63,16 @@ class StafController extends Controller
         return  $hari_ini ;
     }
     public function index(){
-        $data = Pelanggaran::orderBy('created_at','desc')->paginate(10);
+        
         // dd($data);
+        $tanggal = null;
+        $hari = null;
+        $data = Pelanggaran::orderBy('created_at','desc')->paginate(10);
         $jumlah = count($data);
-        $tanggal = $this->tgl_indo($data[0]->created_at->format('Y-m-d'));
-        $hari = $this->hari($data[0]->created_at->format('D'));
+        if($jumlah>0){
+            $tanggal = $this->tgl_indo($data[0]->created_at->format('Y-m-d'));
+            $hari = $this->hari($data[0]->created_at->format('D'));
+        }
         return view('pageStaf/berandaStaf',['data'=>$data, 'jumlah'=>$jumlah,'tanggal'=>$tanggal,'hari'=>$hari]);
     }
     public function cariPelanggar(Request $request){
