@@ -6,12 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.css"/>
     <title>Beranda</title>
 </head>
 
 
 <body>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"></script>
+    <script>
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
+    </script>
     <div class="container mx-auto mb-10">
         <!-- tulisan atas -->
         <div class="mt-4">
@@ -76,7 +83,7 @@
                                 <button type="submit"
                                     class="bg-primary-800 w-14 h-9 text-lg font-semibold rounded-lg text-white">Cari</button>
                             </form>
-                            <table class="divide-y divide-gray-300 ">
+                            <table id="myTable" class="divide-y divide-gray-300 ">
                                 <thead class="bg-gray-900 text-white">
                                     <tr>
                                         <th class="px-6 py-2 text-xs ">
@@ -100,20 +107,20 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-300 text-black">
-                                    <?php $j = ($data->currentpage()-1)* $data->perpage() + 1;?>
+                                    
                                     @foreach ($data as $i=>$dat)
                                     <tr class="whitespace-nowrap">
                                         <td class="px-6 py-4 text-xl">
-                                            {{$j++}}
+                                            {{$i+1}}
                                         </td>
                                         <td class="px-6 py-4 text-xl">
                                             {{$dat->mahasiswa->nama}}
                                         </td>
                                         <td class="px-6 py-4 text-xl">
-                                            {{$dat->mahasiswa->NIM}}
+                                            {{$dat->NIM}}
                                         </td>
                                         <td class="px-6 py-4 text-xl">
-                                            {{$hari.', '.$tanggal}}
+                                            {{$dat->hari.', '.$dat->tanggal}}
                                         </td>
                                         <td class="px-6 py-4 text-xl">
                                             {{$dat->created_at->format('h:i:s A')}}
@@ -129,7 +136,6 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            {{ $data->links('pagination::tailwind') }}
                         </div>
                     </div>
                 </div>   

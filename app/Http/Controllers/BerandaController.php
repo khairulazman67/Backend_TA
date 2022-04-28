@@ -7,6 +7,7 @@ use App\Models\Kelas;
 use App\Models\Pelanggaran;
 use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\Validator;
+use Yajra\Datatables\Datatables;
 
 class BerandaController extends Controller
 {
@@ -62,12 +63,17 @@ class BerandaController extends Controller
         return  $hari_ini ;
     }
     public function index(){
-        $data = Pelanggaran::orderBy('created_at','desc')->paginate(10);
+        $pelanggaran = Pelanggaran::orderBy('id','desc')->get();
+        $data = [];
+        foreach($pelanggaran as $i => $v){
+            $data[$i]=$v;
+            $data[$i]['tanggal'] = $this->tgl_indo($data[$i]->created_at->format('Y-m-d'));
+            $data[$i]['hari'] = $this->hari($data[$i]->created_at->format('D'));
+        }
         // dd($data);
-        $jumlah = count($data);
-        $tanggal = $this->tgl_indo($data[0]->created_at->format('Y-m-d'));
-        $hari = $this->hari($data[0]->created_at->format('D'));
-        return view('beranda',['data'=>$data, 'jumlah'=>$jumlah,'tanggal'=>$tanggal,'hari'=>$hari]);
+        $jumlah = count($pelanggaran);
+        // $tanggal = $this->tgl_indo($data[0]->created_at->format('Y-m-d'));
+        return view('beranda',['data'=>$data, 'jumlah'=>$jumlah]);
     }
     public function cariPelanggar(Request $request){
         $val = Validator::make(
