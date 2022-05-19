@@ -15,28 +15,29 @@ use App\Http\Controllers\KaProdiController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-    Route::get('/', [BerandaController::class, 'index']);
-    Route::post('/cariPelanggar', [BerandaController::class, 'cariPelanggar']);
-    Route::post('/detailBer/{data}', [BerandaController::class,'getDetail']);
+Route::get('/', [BerandaController::class, 'index']);
+Route::post('/cariPelanggar', [BerandaController::class, 'cariPelanggar']);
+Route::post('/detailBer/{data}', [BerandaController::class,'getDetail']);
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/', [BerandaController::class, 'index']);
-    Route::post('/cariPelanggar', [BerandaController::class, 'cariPelanggar']);
-    Route::post('/detailBer/{data}', [BerandaController::class,'getDetail']);
+Route::prefix('staf')->group(function (){
+// Route::middleware(['auth'])->group(function () {
     //middleware staf
-    Route::middleware(['stafProdi'])->group(function () {
+    Route::middleware(['auth:sanctum','stafProdi'])->group(function () {
+        
         Route::get('/',[StafController::class, 'index']);
-        Route::post('/detailPelStaf/{data}',[StafController::class, 'getDetailPelanggaran']);
-        Route::post('/cariPelanggarStaf', [StafController::class, 'cariPelanggar']);
+        Route::post('/detailPel/{data}',[StafController::class, 'getDetailPelanggaran']);
+        Route::post('/cariPelanggar', [StafController::class, 'cariPelanggar']);
         Route::get('/dataMahasiswa', [StafController::class, 'viewDataMahasiswa']);
         Route::post('cariMahasiswaStaf',[StafController::class,'cariMahasiswa']);
-        Route::post('staf/hapusPelanggaran/{data}',[StafController::class,'hapusPelanggaran']);
+        Route::delete('hapusPelanggaran/{data}',[StafController::class,'hapusPelanggaran']);
     });
-    Route::middleware(['kaProdi'])->group(function () {
+// });
+});
+Route::prefix('kaprodi')->group(function (){
+    Route::middleware(['auth:sanctum','kaProdi'])->group(function () {
         Route::get('/',[KaProdiController::class, 'index']);
     });
 });
-
 
 Route::get('/detail', function () {
     return view('detail');

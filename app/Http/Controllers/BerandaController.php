@@ -63,7 +63,6 @@ class BerandaController extends Controller
         return  $hari_ini ;
     }
     public function index(){
-<<<<<<< HEAD
         $pelanggaran = Pelanggaran::orderBy('id','desc')->get();
         $data = [];
         foreach($pelanggaran as $i => $v){
@@ -75,18 +74,6 @@ class BerandaController extends Controller
         $jumlah = count($pelanggaran);
         // $tanggal = $this->tgl_indo($data[0]->created_at->format('Y-m-d'));
         return view('beranda',['data'=>$data, 'jumlah'=>$jumlah]);
-=======
-        $tanggal = null;
-        $hari = null;
-        $data = Pelanggaran::orderBy('created_at','desc')->paginate(10);
-        // dd($data);
-        $jumlah = count($data);
-        if($jumlah>0){
-            $tanggal = $this->tgl_indo($data[0]->created_at->format('Y-m-d'));
-            $hari = $this->hari($data[0]->created_at->format('D'));
-        }
-        return view('beranda',['data'=>$data, 'jumlah'=>$jumlah,'tanggal'=>$tanggal,'hari'=>$hari]);
->>>>>>> 90f06b78160fefbba965b3d7c05665aa84b2aa52
     }
     public function cariPelanggar(Request $request){
         $val = Validator::make(

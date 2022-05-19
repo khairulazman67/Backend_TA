@@ -16,9 +16,11 @@ class IsKaProdi
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->user()->level !== 'ka_prodi'){
-            abort(403);
+        if(auth()->user()->level === 'ka_prodi'){
+            // dd(auth()->user());
+            return $next($request);
+        }else{
+            return redirect('/staf');
         }
-        return $next($request);
     }
 }

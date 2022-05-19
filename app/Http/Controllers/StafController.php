@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\DB;
 
 class StafController extends Controller
 {
+    
+    // public function __construct(){
+    //     $this->middleware('stafProdi');
+    // }
     function tgl_indo($tanggal){
         $bulan = array (
             1 =>   'Januari',
@@ -134,9 +138,9 @@ class StafController extends Controller
     public function hapusPelanggaran($data){
         $delete = DB::table('pelanggarans')->where('id','=',$data)->delete();
         if($delete){
-            return redirect('/berandaStaf')->with('success', 'Data berhasil dihapus');
+            return redirect('staf/')->with('success', 'Data berhasil dihapus');
         }else{
-            return redirect('/berandaStaf')->with('error', 'Terjadi kesalahan saat menghapus data');
+            return redirect('staf/')->with('error', 'Terjadi kesalahan saat menghapus data');
         }
     }
 }

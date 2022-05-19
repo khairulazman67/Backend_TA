@@ -21,16 +21,30 @@
     </script>
     <div class="container mx-auto mb-10">
         <!-- tulisan atas -->
-        <div class="mt-4">
-            <div class="flex justify-center text-secondary-900 font-bold text-3xl">
-                Sistem Deteksi Physical Distancing dan Wajah Bermasker
+        <div class="w-full  relative">
+            <div class="mt-4">
+                <div class="flex justify-center text-secondary-900 font-bold text-3xl">
+                    Sistem Deteksi Physical Distancing dan Wajah Bermasker
+                </div>
+                <div class="flex justify-center text-primary-900 font-bold text-2xl">
+                    Menggunakan Metode You Only Look Once (YOLO)
+                </div>
             </div>
-            <div class="flex justify-center text-primary-900 font-bold text-2xl">
-                Menggunakan Metode You Only Look Once (YOLO)
+            <div class="absolute text-white bg-primary-900 hover:bg-primary-800 rounded-xl  inset-y-0 right-0 mt-5 mb-12">
+                @if (auth()->check())
+                    {{-- @if (auth()->user()->level === 'ka_prodi') --}}
+                        <a href="{{ url('/kaprodi') }}" ><i class="mt-2 mx-3 fa-solid fa-right-to-bracket"></i></a>
+                    {{-- @endif --}}
+                @else
+                    <a href="{{ url('login') }}" ><i class="mt-2 mx-3 fa-solid fa-right-to-bracket"></i></a>
+                @endif
+                
+                
+                
+                
             </div>
+            <div class="bg-secondary-300 h-2 mt-7"></div>
         </div>
-        <div class="w-full bg-secondary-300 h-2 mt-7"></div>
-
         <!-- info -->
         <div class="flex justify-center h-40 mt-6 grid-rows-1 grid-flow-col gap-20 text-center my-10">
             <div class="bg-primary-900 w-full rounded-xl shadow-lg shadow-gray-400 py-10 px-7 ">

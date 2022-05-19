@@ -11,23 +11,33 @@
 
 <body>
     <div class="flex flex-col">
-        
-        <div class="bg-primary-700 px-3 py-2 flex justify-between text-white font-bold">
-            <div></div>
+        <div class="bg-primary-700 px-3 py-2 flex flex-row justify-center text-white font-bold">
             <div>   
                 <div class="bg-primary-900 hover:bg-primary-800 py-2 px-3 inline">
-                    <a href="{{ url('/berandaStaf') }}">Beranda</a>
+                    <a href="{{ url('kaprodi/') }}">Beranda</a>
                 </div>
                 <div class="px-[2px] rounded-lg bg-primary-600 inline"></div>
                 <div class="bg-primary-900 hover:bg-primary-800 py-2 px-3 inline">
-                    <a href="{{ url('/dataMahasiswa') }}">Data Mahasiswa</a>
+                    <a href="{{ url('kaprodi/') }}">Data Mahasiswa</a>
                 </div>
                 <div class="px-[2px] rounded-lg bg-primary-600 inline"></div>
                 <div class="bg-primary-900 hover:bg-primary-800 py-2 px-3 inline">
-                    <a href="{{ url('/dataMahasiswa') }}">Pelaporan</a>
+                    <a href="{{ url('kaprodi/') }}">Pelaporan</a>
                 </div>
             </div>
-            <div>{{ Auth::user()->name }} <i class="fa-solid fa-right-from-bracket"></i></div>
+            <div class="absolute right-3 flex flex-row ">
+                <div class="mr-3">
+                    {{ Auth::user()->name }} 
+                </div>
+                <div >
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="underline text-sm hover:text-gray-900">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
         <div class="container mx-auto mb-10">
             @yield('content')

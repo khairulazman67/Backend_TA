@@ -64,7 +64,7 @@
             <div class="flex flex-col">
                 <div class="w-full">
                     <div class="border-b border-gray-200 shadow ">
-                        <form action="/cariPelanggarStaf" method="post" class="mb-5">
+                        <form action="/cariPelanggar" method="post" class="mb-5">
                             @csrf
                             <input type="text" name="keyword"
                                 class="border-solid border-2 border-gray-800 rounded-xl h-9 w-60 px-3"
@@ -116,7 +116,7 @@
                                         {{$dat->created_at->format('h:i:s A')}}
                                     </td>
                                     <td class="flex px-6 py-4">
-                                        <form action="{{url('detailPelStaf/'.$dat->id)}}" method="POST">
+                                        <form action="{{url('staf/detailPel/'.$dat->id)}}" method="POST">
                                             @csrf
                                             <button
                                                 class="px-6 py-1 text-sm text-white bg-primary-800 hover:bg-primary-900 rounded-lg">Detail</button>
