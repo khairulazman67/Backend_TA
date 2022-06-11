@@ -1,15 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('/layouts/layoutGeneral') 
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{{asset('css/app.css')}}">
-    <title>Monitor</title>
-</head>
-
-<body>
+@section('title', 'Detail Mahasiswa')
+@section('content')
     <div class="container mx-auto mb-10 px-40">
         <!-- tulisan atas -->
         <div class="mt-2">
@@ -24,7 +16,7 @@
 
         <div class="px-10">
             <div class="px-20 py-10 w-full h-auto shadow-lg shadow-gray-400 mt-5">
-                <a href="{{url('/')}}" class="text-lg text-primary-800 hover:text-gray-900"><i class="fas fa-arrow-left mr-1"></i>Kembali</a>
+                <a href="{{ url()->previous() }}" class="text-lg text-primary-800 hover:text-gray-900"><i class="fas fa-arrow-left mr-1"></i>Kembali</a>
                 <div class="flex flex-row">
                     <div>
                         <h1 class="text-primary-900 font-bold text-2xl mt-6">Detail Pelanggaran</h1>
@@ -64,5 +56,4 @@
             </div>
         </div>
     </div>
-</body>
-</html>
+@endsection

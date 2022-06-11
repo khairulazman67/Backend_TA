@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{{asset('css/app.css')}}">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.css"/>
-    <title>Beranda</title>
-</head>
-
+@extends('../layouts/layoutGeneral')
+@section('title', 'Detail Mahasiswa')
+@section('content')
 
 <body>
     <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
@@ -140,7 +131,7 @@
                                             {{$dat->created_at->format('h:i:s A')}}
                                         </td>
                                         <td class="px-6 py-4">
-                                            <form action="{{url('detailBer/'.$dat->id)}}" method="POST">
+                                            <form action="{{url('detailPelanggaran/'.$dat->id)}}" method="POST">
                                                 @csrf
                                                 <button
                                                     class="px-6 py-1 text-sm text-white bg-primary-800 hover:bg-primary-900 rounded-lg">Detail</button>
@@ -189,6 +180,5 @@
             );
         </script>
     </div>
-</body>
+@endsection
 
-</html>

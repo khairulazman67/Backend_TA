@@ -72,7 +72,8 @@ class StafController extends Controller
         $tanggal = null;
         $hari = null;
         $data = Pelanggaran::orderBy('created_at','desc')->paginate(10);
-        $jumlah = count($data);
+        $datapelanggaran = Pelanggaran::orderBy('created_at','desc')->get();
+        $jumlah = count($datapelanggaran);
         if($jumlah>0){
             $tanggal = $this->tgl_indo($data[0]->created_at->format('Y-m-d'));
             $hari = $this->hari($data[0]->created_at->format('D'));
@@ -113,12 +114,7 @@ class StafController extends Controller
 
         return view('pageStaf/berandaStaf',['data'=>$sendData, 'jumlah'=>$jumlah,'tanggal'=>$tanggal,'hari'=>$hari]);
     }
-    public function getDetailPelanggaran($data){
-        $data = Pelanggaran::where('id','=',$data)->get();
-        $tanggal = $this->tgl_indo($data[0]->created_at->format('Y-m-d'));
-        $hari = $this->hari($data[0]->created_at->format('D'));
-        return view('pageStaf/detailPelanggaran',['data'=>$data,'tanggal'=>$tanggal,'hari'=>$hari]);
-    }
+
 
     //Page data mahasiswa
     public function viewDataMahasiswa(){
@@ -143,4 +139,5 @@ class StafController extends Controller
             return redirect('staf/')->with('error', 'Terjadi kesalahan saat menghapus data');
         }
     }
+
 }

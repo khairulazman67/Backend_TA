@@ -1,11 +1,11 @@
 <?php
-
 namespace App\Http\Controllers;
 use App\Models\Kelas;
 use App\Models\Pelanggaran;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
+use PDF;
 class KaProdiController extends Controller
 {
     function tgl_indo($tanggal){
@@ -65,11 +65,75 @@ class KaProdiController extends Controller
         $tanggal = null;
         $hari = null;
         $data = Pelanggaran::orderBy('created_at','desc')->paginate(10);
-        $jumlah = count($data);
+        $datapelanggaran = Pelanggaran::orderBy('created_at','desc')->get();
+        $jumlah = count($datapelanggaran);
         if($jumlah>0){
             $tanggal = $this->tgl_indo($data[0]->created_at->format('Y-m-d'));
             $hari = $this->hari($data[0]->created_at->format('D'));
         }
         return view('pageKaProdi/berandaKaProdi',['data'=>$data, 'jumlah'=>$jumlah,'tanggal'=>$tanggal,'hari'=>$hari]);
+    }
+    public function viewDataMahasiswa(){
+        $dataMahasiswa = DB::table('mahasiswas')->join('kelas','mahasiswas.id_kelas','=','kelas.id')->paginate(10);
+        return view('pageKaProdi/dataMahasiswa',['DataMahasiswa'=>$dataMahasiswa]);
+    }
+    public function cariMahasiswa(Request $request){
+        $dataMahasiswa  = DB::table('mahasiswas')->join('kelas','mahasiswas.id_kelas','=','kelas.id')->where('NIM', $request->keyword)
+        ->orWhere('NIM', $request->keyword)->orWhere('nama','like','%'.$request->keyword.'%')->orderBy('NIM','desc')->paginate(10);
+        if(count($dataMahasiswa)>0){
+            session()->flash('success', 'Data berhasil ditemukan');
+        }else{
+            session()->flash('failed', 'Data tidak ditemukan');
+        }
+        return view('pageKaProdi/dataMahasiswa',['DataMahasiswa'=>$dataMahasiswa]);
+    }
+    public function filterReport(Request $request){
+        // dd($request);
+        // $old_request = {
+        //     'tahun': $request->tahun,
+        //     'bulan' : $request->bulan
+        // };
+        $old_request['tahun']=$request->tahun;
+        $old_request['bulan']=$request->bulan;
+
+        $data = Pelanggaran::whereYear('created_at',$request->tahun)->whereMonth('created_at',$request->bulan)->paginate(10);
+        if(count($data)>0){
+            return view('pageKaProdi/pelaporan',['data'=>$data,'old_request'=>$old_request]);
+        }else{
+            session()->flash('failed', 'Data tidak tersedia');
+            return view('pageKaProdi/pelaporan',['data'=>$data,'old_request'=>$old_request]);
+        }
+        
+        
+        // dd($pelanggaran);
+    }
+    public function printReport(Request $request){
+        // dd($request);
+        $old_request['tahun']=$request->tahun;
+        $old_request['bulan']=$request->bulan;
+        // dd($old_request);
+        $data = Pelanggaran::whereYear('created_at',$request->tahun)->whereMonth('created_at',$request->bulan)->get();
+        // dd(count($data));
+        if($old_request['tahun']!==null && $old_request['bulan']!==null && count($data)>0){
+            
+            $pdf = PDF::loadview('pageKaProdi/printReport',['data'=>$data,'old_request'=>$old_request])->setPaper('A4','potrait');
+            // return $pdf->stream();
+            $pdf->getDomPDF()->setHttpContext(
+            stream_context_create([
+                    'ssl' => [
+                        'allow_self_signed'=> TRUE,
+                        'verify_peer' => FALSE,
+                        'verify_peer_name' => FALSE,
+                    ]
+                ])
+            );
+            return $pdf->download('itsolutionstuff.pdf');
+            // session()->flash('success', 'Data berhasil ditemukan');
+        }else{
+            session()->flash('failed', 'Silahkan melakukan filter Tahun dan Bulan terlebih dahulu');
+            return view('pageKaProdi/pelaporan',['old_request'=>$old_request]);
+            // 
+        }
+        
     }
 }

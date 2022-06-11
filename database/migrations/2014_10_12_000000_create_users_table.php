@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->enum('level',['staf_prodi','ka_prodi']);
             
             
-            $table->rememberToken();
+            // $table->rememberToken();
             $table->timestamps();
         });
     }

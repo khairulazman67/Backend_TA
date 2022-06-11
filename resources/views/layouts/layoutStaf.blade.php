@@ -23,7 +23,9 @@
             </div>
             <div class="absolute right-3 flex flex-row ">
                 <div class="mr-3">
-                    {{ Auth::user()->name }} 
+                    @if (auth()->check())
+                        {{ Auth::user()->name }} 
+                    @endif
                 </div>
                 <div >
                     <form method="POST" action="{{ route('logout') }}">

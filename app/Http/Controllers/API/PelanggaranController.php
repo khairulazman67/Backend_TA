@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 
 use App\Models\Kelas;
 use App\Models\Pelanggaran;
+use App\Models\Mahasiswa;
 use GrahamCampbell\ResultType\Success;
 
 class PelanggaranController extends Controller
@@ -78,5 +79,11 @@ class PelanggaranController extends Controller
             return ResponseFormatter::error(null,'Waktu belum mencukupi',403);
         }
         
+    }
+    public function getDataMahasiswa(){
+        $data = Mahasiswa::get();
+        if($data){
+            return ResponseFormatter::success($data  ,'data berhasil didapat');
+        }
     }
 }

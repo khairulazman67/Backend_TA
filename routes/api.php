@@ -20,4 +20,6 @@ use App\Http\Controllers\API\PelanggaranController;
 
 Route::get('/datakelas', [PelanggaranController::class, 'dataKelas']);
 
+Route::get('/getdatamahasiswa', [PelanggaranController::class, 'getDataMahasiswa']);
+
 Route::post('/inputpelanggaran',[PelanggaranController::class, 'inputPelanggaran']);

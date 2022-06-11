@@ -19,7 +19,8 @@ mix
         'public/webfonts'
     )
     .postCss('resources/css/app.css', 'public/css', [
-    require('postcss-import'),
-    require('tailwindcss'),
-    require('autoprefixer'),
-]);
+        require('postcss-import'),
+        require('tailwindcss'),
+        require('autoprefixer'),
+        ]
+    );

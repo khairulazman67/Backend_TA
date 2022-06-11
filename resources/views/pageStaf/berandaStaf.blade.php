@@ -116,7 +116,7 @@
                                         {{$dat->created_at->format('h:i:s A')}}
                                     </td>
                                     <td class="flex px-6 py-4">
-                                        <form action="{{url('staf/detailPel/'.$dat->id)}}" method="POST">
+                                        <form action="{{url('detailPelanggaran/'.$dat->id)}}" method="POST">
                                             @csrf
                                             <button
                                                 class="px-6 py-1 text-sm text-white bg-primary-800 hover:bg-primary-900 rounded-lg">Detail</button>
