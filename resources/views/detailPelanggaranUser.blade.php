@@ -47,7 +47,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        
+
                     </div>
                     <div class=" w-full h-full">
                         <img src="{{asset('imgpelanggaran/'.$data[0]->bukti) }}" alt="" class="w-[600px] rounded-xl m-auto">

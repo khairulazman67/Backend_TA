@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
     {
         User::create(
             [
-                'name' => 'Muhammad Azman',
+                'name' => 'Salahuddin',
                 'email' => 'azman.khairul67@gmail.com',
                 'id_prodi' => '1',
                 'level' => 'ka_prodi',

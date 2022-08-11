@@ -23,3 +23,7 @@ Route::get('/datakelas', [PelanggaranController::class, 'dataKelas']);
 Route::get('/getdatamahasiswa', [PelanggaranController::class, 'getDataMahasiswa']);
 
 Route::post('/inputpelanggaran',[PelanggaranController::class, 'inputPelanggaran']);
+
+// inputPelanggaranDistance
+
+Route::post('/pelanggarandistance',[PelanggaranController::class, 'inputPelanggaranDistance']);
