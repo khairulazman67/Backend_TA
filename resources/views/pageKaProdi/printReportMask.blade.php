@@ -40,7 +40,7 @@
                 'November',
                 'Desember'
             );
-            
+
             // variabel pecahkan 0 = tanggal
             // variabel pecahkan 1 = bulan
             // variabel pecahkan 2 = tahun
@@ -62,7 +62,7 @@
                 'Desember'
             );
             $pecahkan = explode('-', $tanggal);
-            
+
             // variabel pecahkan 0 = tanggal
             // variabel pecahkan 1 = bulan
             // variabel pecahkan 2 = tahun
@@ -73,7 +73,7 @@
                 case 'Sun':
                     $hari_ini = "Minggu";
                 break;
-                case 'Mon':			
+                case 'Mon':
                     $hari_ini = "Senin";
                 break;
                 case 'Tue':
@@ -92,7 +92,7 @@
                     $hari_ini = "Sabtu";
                 break;
                 default:
-                    $hari_ini = "Tidak di ketahui";		
+                    $hari_ini = "Tidak di ketahui";
                 break;
             }
             return  $hari_ini ;
@@ -124,32 +124,32 @@
             <td>{{bulan_indo($old_request['bulan'])}}</td>
         </tr>
     </table>
-    
+
     <center>
         {{-- {{dd($data)}} --}}
-    <table border="1">  
+    <table border="1">
         <thead style="background-color:black; color:white; padding-top:15px; padding-bottom:15px">
-            <tr>  
-                <th class="col1">No</th>  
-                <th >NIM</th>  
+            <tr>
+                <th class="col1">No</th>
+                <th >NIM</th>
                 <th >Nama</th>
                 <th >Kelas</th>
-                <th >Tanggal</th>  
+                <th >Tanggal</th>
                 <th>Bukti</th>
-            </tr>  
+            </tr>
         </thead>
         <tbody>
             @foreach ($data as $i=>$dat)
-                <tr>  
-                    <td class="col1">{{$i+1}}</td>  
-                    <td class="paddingcol">{{$dat->NIM}}</td>  
+                <tr>
+                    <td class="col1">{{$i+1}}</td>
+                    <td class="paddingcol">{{$dat->NIM}}</td>
                     <td class="paddingcol">{{$dat->mahasiswa->nama}}</td>
-                    <td class="paddingcol">{{$dat->mahasiswa->kelas->nm_kelas}}</td>  
+                    <td class="paddingcol">{{$dat->mahasiswa->kelas->nm_kelas}}</td>
                     <td class="paddingcol">{{hari($dat->created_at->format('D'))}}, {{tgl_indo($dat->created_at->format('Y-m-d'))}}</td>
                     <td><img src="{{public_path('imgpelanggaran/'.$dat->bukti) }}" alt=""  width="150"></td>
                 </tr>
             @endforeach
-            
+
         </tbody>
     </table>
     </center>

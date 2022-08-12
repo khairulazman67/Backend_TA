@@ -29,10 +29,10 @@
                 @else
                     <a href="{{ url('login') }}" ><i class="mt-2 mx-3 fa-solid fa-right-to-bracket"></i></a>
                 @endif
-                
-                
-                
-                
+
+
+
+
             </div>
             <div class="bg-secondary-300 h-2 mt-7"></div>
         </div>
@@ -72,10 +72,10 @@
                 <div class="flex justify-between mx-2 my-2 bg-red-500 text-white rounded-lg h-10 text-lg px-5">
                     <p class="my-auto">{{session()->get('failed')}}</p>
                     <i class="my-auto hover:text-gray-600 fas fa-times alert-del"></i>
-                </div>        
+                </div>
             @endif
-            
-            
+
+
             <div class="my-5 pb-5 flex justify-center mx-auto">
                 <div class="flex flex-col">
                     <div class="w-full">
@@ -104,7 +104,7 @@
                                             Waktu Pelanggaran
                                         </th>
                                         <th class="px-10 py-2 text-xs ">
-                                            Hapus 
+                                            Hapus
                                         </th>
                                         <th class="px-10 py-2 text-xs ">
                                             Detail
@@ -112,7 +112,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-300 text-black">
-                                    
+
                                     @foreach ($data as $i=>$dat)
                                     <tr class="whitespace-nowrap">
                                         <td class="px-6 py-4 text-xl">
@@ -143,8 +143,9 @@
                             </table>
                         </div>
                     </div>
-                </div>   
+                </div>
             </div>
+
         </div>
         <script>
             window.setTimeout("waktu()", 1000);

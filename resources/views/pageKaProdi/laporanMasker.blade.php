@@ -17,7 +17,7 @@
             'November',
             'Desember'
         );
-        
+
         // variabel pecahkan 0 = tanggal
         // variabel pecahkan 1 = bulan
         // variabel pecahkan 2 = tahun
@@ -39,7 +39,7 @@
             'Desember'
         );
         $pecahkan = explode('-', $tanggal);
-        
+
         // variabel pecahkan 0 = tanggal
         // variabel pecahkan 1 = bulan
         // variabel pecahkan 2 = tahun
@@ -50,7 +50,7 @@
             case 'Sun':
                 $hari_ini = "Minggu";
             break;
-            case 'Mon':			
+            case 'Mon':
                 $hari_ini = "Senin";
             break;
             case 'Tue':
@@ -69,7 +69,7 @@
                 $hari_ini = "Sabtu";
             break;
             default:
-                $hari_ini = "Tidak di ketahui";		
+                $hari_ini = "Tidak di ketahui";
             break;
         }
         return  $hari_ini ;
@@ -90,17 +90,30 @@
 
     <!-- table -->
     <div class="w-full h-auto shadow-xl shadow-gray-400 mt-4">
-        <div class="bg-secondary-900 rounded-t-xl px-10 py-3">
-            <h1 class="font-bold text-white text-xl">Pelaporan Pelanggaran</h1>
+        <div class="bg-secondary-900 rounded-t-xl px-10 py-3 flex justify-center">
+            <div class="flex flex-row gap-3 font-bold text-white">
+                <div class="bg-gray-600 hover:bg-gray-700 py-2 px-3 inline rounded-lg">
+                    <a href="{{ url('kaprodi/laporan') }}"><i class="fa-solid fa-mask-face mr-2"></i> Laporan Pelanggar Masker</a>
+                </div>
+                <div class="bg-gray-600 hover:bg-gray-700 py-2 px-3 inline rounded-lg">
+                    <a href="{{ url('kaprodi/laporansocialdistancing') }}"><i class="fa-solid fa-people-arrows mr-2"></i> Laporan Pelanggar Physical Distancing</a>
+                </div>
+            </div>
         </div>
-        <?php 
+        <?php
             date_default_timezone_set('Asia/Jakarta');
             if(!isset($old_request)){
                 $old_request['tahun']=date("Y");
                 $old_request['bulan']=date("m");
             }
         ?>
+
         <div class="py-5 px-10">
+
+
+            <h1 class="font-bold text-2xl">Laporan Pelanggaran Masker</h1>
+            <div class="h-1 w-full bg-gray-700 mt-2 rounded-xl"></div>
+
             {{-- Message --}}
             @if (session()->has('success'))
                 <div class="flex justify-between mx-2 my-2 bg-green-600 text-white rounded-lg h-10 text-lg px-5">
@@ -111,13 +124,13 @@
                 <div class="flex justify-between mx-2 my-2 bg-red-500 text-white rounded-lg h-10 text-lg px-5">
                     <p class="my-auto">{{session()->get('failed')}}</p>
                     <i class="my-auto hover:text-gray-600 fas fa-times alert-del"></i>
-                </div>        
+                </div>
             @endif
             <div class="bg-primary-900 rounded-xl py-4 mt-4 px-4  font-bold ">
                 <div class="flex flex-row justify-between">
-                    
+
                     <div >
-                        <form class="flex flex-row" action="{{url('/kaprodi/filterreport')}}" method="post">
+                        <form class="flex flex-row" action="{{url('/kaprodi/filterreportmask')}}" method="post">
                         @csrf
                             <div class="flex">
                                 <div id="states-button" class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-500 bg-gray-100 border border-gray-300 rounded-l-lg  ">
@@ -126,9 +139,9 @@
                                 <label class="sr-only">Pilih Tahun</label>
 
                                 <select name="tahun" class="bg-gray-50 w-32 border border-gray-300 text-gray-900 text-sm rounded-r-lg border-l-gray-100  border-l-2 focus:ring-primary-900 focus:border-primary-900 block  p-2.5">
-                                    
+
                                     <option value="{{$old_request['tahun']?$old_request['tahun']:''}}" selected>{{$old_request['tahun']?$old_request['tahun']:'Pilih Tahun'}}</option>
-                                    
+
                                     @foreach (range(date('Y'), 1990) as $x)
                                         <option value="{{$x}}">{{$x}}</option>
                                     @endforeach
@@ -140,7 +153,7 @@
                                 </div>
                                 <label class="sr-only">Pilih Bulan</label>
                                 <select name="bulan" class="bg-gray-50 border w-32 border-gray-300 text-gray-900 text-sm rounded-r-lg border-l-gray-100  border-l-2 focus:ring-primary-900 focus:border-primary-900 block  p-2.5">
-                                    
+
                                     <option   option value="{{$old_request['bulan']?$old_request['bulan']:''}}" selected>{{bulan_indo($old_request['bulan']?$old_request['bulan']:'Pilih Bulan')}}</option>
                                     <option value="1">Januari</option>
                                     <option value="2">Februari</option>
@@ -156,13 +169,13 @@
                                     <option value="12">Desember</option>
                                 </select>
                             </div>
-                            <div  class="flex ml-4"> 
+                            <div  class="flex ml-4">
                                 <button type="submit" class="px-5 bg-secondary-900 hover:bg-secondary-800 rounded-xl text-white font-bold">Filter</button>
                             </div>
                         </form>
                     </div>
                     <div>
-                        <form action="{{url('/kaprodi/printreport')}}" method="post">
+                        <form action="{{url('/kaprodi/printreportmask')}}" method="post">
                             @csrf
                             {{-- {{dd($old_request['tahun'])}} --}}
                             @if (!isset($old_request))
@@ -180,8 +193,6 @@
             </div>
             <!-- table -->
             @if (isset($data) && count($data)>0)
-                
-            
             <div class="my-5 pb-5 flex justify-center mx-auto">
                 <div class="flex flex-col">
                     <div class="w-full">
@@ -204,7 +215,7 @@
                                         <th class="px-10 py-2 text-xl ">
                                             Tanggal
                                         </th>
-                                        
+
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-300 text-black">

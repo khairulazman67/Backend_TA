@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use App\Models\Kelas;
 use App\Models\Pelanggaran;
+use App\Models\PelanggaranDistance;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +25,7 @@ class KaProdiController extends Controller
             'Desember'
         );
         $pecahkan = explode('-', $tanggal);
-        
+
         // variabel pecahkan 0 = tanggal
         // variabel pecahkan 1 = bulan
         // variabel pecahkan 2 = tahun
@@ -35,7 +36,7 @@ class KaProdiController extends Controller
             case 'Sun':
                 $hari_ini = "Minggu";
             break;
-            case 'Mon':			
+            case 'Mon':
                 $hari_ini = "Senin";
             break;
             case 'Tue':
@@ -54,13 +55,13 @@ class KaProdiController extends Controller
                 $hari_ini = "Sabtu";
             break;
             default:
-                $hari_ini = "Tidak di ketahui";		
+                $hari_ini = "Tidak di ketahui";
             break;
         }
         return  $hari_ini ;
     }
     public function index(){
-        
+
         // dd($data);
         $tanggal = null;
         $hari = null;
@@ -87,7 +88,7 @@ class KaProdiController extends Controller
         }
         return view('pageKaProdi/dataMahasiswa',['DataMahasiswa'=>$dataMahasiswa]);
     }
-    public function filterReport(Request $request){
+    public function filterReportMask(Request $request){
         // dd($request);
         // $old_request = {
         //     'tahun': $request->tahun,
@@ -98,16 +99,36 @@ class KaProdiController extends Controller
 
         $data = Pelanggaran::whereYear('created_at',$request->tahun)->whereMonth('created_at',$request->bulan)->paginate(10);
         if(count($data)>0){
-            return view('pageKaProdi/pelaporan',['data'=>$data,'old_request'=>$old_request]);
+            return view('pageKaProdi/laporanMasker',['data'=>$data,'old_request'=>$old_request]);
         }else{
             session()->flash('failed', 'Data tidak tersedia');
-            return view('pageKaProdi/pelaporan',['data'=>$data,'old_request'=>$old_request]);
+            return view('pageKaProdi/laporanMasker',['data'=>$data,'old_request'=>$old_request]);
         }
-        
-        
+
+
         // dd($pelanggaran);
     }
-    public function printReport(Request $request){
+    public function filterReportSocialDistancing(Request $request){
+        // dd($request);
+        // $old_request = {
+        //     'tahun': $request->tahun,
+        //     'bulan' : $request->bulan
+        // };
+        $old_request['tahun']=$request->tahun;
+        $old_request['bulan']=$request->bulan;
+
+        $data = PelanggaranDistance::whereYear('created_at',$request->tahun)->whereMonth('created_at',$request->bulan)->paginate(10);
+        if(count($data)>0){
+            return view('pageKaProdi/laporanDistance',['data'=>$data,'old_request'=>$old_request]);
+        }else{
+            session()->flash('failed', 'Data tidak tersedia');
+            return view('pageKaProdi/laporanDistance',['data'=>$data,'old_request'=>$old_request]);
+        }
+
+
+        // dd($pelanggaran);
+    }
+    public function printReportMask(Request $request){
         // dd($request);
         $old_request['tahun']=$request->tahun;
         $old_request['bulan']=$request->bulan;
@@ -115,8 +136,8 @@ class KaProdiController extends Controller
         $data = Pelanggaran::whereYear('created_at',$request->tahun)->whereMonth('created_at',$request->bulan)->get();
         // dd(count($data));
         if($old_request['tahun']!==null && $old_request['bulan']!==null && count($data)>0){
-            
-            $pdf = PDF::loadview('pageKaProdi/printReport',['data'=>$data,'old_request'=>$old_request])->setPaper('A4','potrait');
+
+            $pdf = PDF::loadview('pageKaProdi/printReportMask',['data'=>$data,'old_request'=>$old_request])->setPaper('A4','potrait');
             // return $pdf->stream();
             $pdf->getDomPDF()->setHttpContext(
             stream_context_create([
@@ -131,9 +152,36 @@ class KaProdiController extends Controller
             // session()->flash('success', 'Data berhasil ditemukan');
         }else{
             session()->flash('failed', 'Silahkan melakukan filter Tahun dan Bulan terlebih dahulu');
-            return view('pageKaProdi/pelaporan',['old_request'=>$old_request]);
-            // 
+            return view('pageKaProdi/laporanMasker',['old_request'=>$old_request]);
+            //
         }
-        
+    }
+    public function printReportDistance(Request $request){
+        // dd($request);
+        $old_request['tahun']=$request->tahun;
+        $old_request['bulan']=$request->bulan;
+        // dd($old_request);
+        $data = PelanggaranDistance::whereYear('created_at',$request->tahun)->whereMonth('created_at',$request->bulan)->get();
+        // dd(count($data));
+        if($old_request['tahun']!==null && $old_request['bulan']!==null && count($data)>0){
+
+            $pdf = PDF::loadview('pageKaProdi/printReportDistance',['data'=>$data,'old_request'=>$old_request])->setPaper('A4','potrait');
+            // return $pdf->stream();
+            $pdf->getDomPDF()->setHttpContext(
+            stream_context_create([
+                    'ssl' => [
+                        'allow_self_signed'=> TRUE,
+                        'verify_peer' => FALSE,
+                        'verify_peer_name' => FALSE,
+                    ]
+                ])
+            );
+            return $pdf->download('itsolutionstuff.pdf');
+            // session()->flash('success', 'Data berhasil ditemukan');
+        }else{
+            session()->flash('failed', 'Silahkan melakukan filter Tahun dan Bulan terlebih dahulu');
+            return view('pageKaProdi/laporanDistance',['old_request'=>$old_request]);
+            //
+        }
     }
 }

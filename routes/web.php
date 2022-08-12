@@ -24,7 +24,7 @@ Route::prefix('staf')->group(function (){
 // Route::middleware(['auth'])->group(function () {
     //middleware staf
     Route::middleware(['auth:sanctum','stafProdi'])->group(function () {
-        
+
         Route::get('/',[StafController::class, 'index']);
         Route::post('/detailPel/{data}',[PelanggaranController::class, 'getDetailPelanggaran']);
         Route::post('/cariPelanggar', [PelanggaranController::class, 'cariPelanggar']);
@@ -40,17 +40,23 @@ Route::prefix('kaprodi')->group(function (){
         Route::post('/detailPel/{data}',[StafController::class, 'getDetailPelanggaran']);
         Route::get('/dataMahasiswa', [kaProdiController::class, 'viewDataMahasiswa']);
         Route::post('/cariMahasiswa',[kaProdiController::class,'cariMahasiswa']);
-        Route::get('/pelaporan', function () {
-            return view('pageKaProdi/pelaporan');
+        Route::get('/laporan', function () {
+            return view('pageKaProdi/laporanMasker');
+        });
+        Route::get('/laporansocialdistancing', function () {
+            return view('pageKaProdi/laporanDistance');
         });
         // Route::post('/filterreport', function () {
         //     return view('pageKaProdi/pelaporan');
         // });
-        Route::post('/filterreport',[kaProdiController::class,'filterReport']);
-        Route::post('/printreport',[KaProdiController::class,'printReport']);
+        Route::post('/filterreportmask',[kaProdiController::class,'filterReportMask']);
+        Route::post('/filterreportsocialdistancing',[kaProdiController::class,'filterReportSocialDistancing']);
+
+        Route::post('/printreportmask',[KaProdiController::class,'printReportMask']);
+        Route::post('/printreportdistance',[KaProdiController::class,'printReportDistance']);
     });
 
-    
+
 });
 
 Route::get('/detail', function () {
