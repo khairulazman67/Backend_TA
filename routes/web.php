@@ -19,6 +19,7 @@ use App\Http\Controllers\PelanggaranController;
 Route::get('/', [BerandaController::class, 'index']);
 Route::post('/cariPelanggar', [BerandaController::class, 'cariPelanggar']);
 Route::post('/detailPelanggaran/{data}', [PelanggaranController::class,'getDetail']);
+Route::post('/detailPelanggaranDistance/{data}', [PelanggaranController::class,'getDetailDistance']);
 
 Route::prefix('staf')->group(function (){
 // Route::middleware(['auth'])->group(function () {

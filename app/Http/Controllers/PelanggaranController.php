@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pelanggaran;
+use App\Models\PelanggaranDistance;
 
 class PelanggaranController extends Controller
 {
@@ -23,7 +24,7 @@ class PelanggaranController extends Controller
             'Desember'
         );
         $pecahkan = explode('-', $tanggal);
-        
+
         // variabel pecahkan 0 = tanggal
         // variabel pecahkan 1 = bulan
         // variabel pecahkan 2 = tahun
@@ -34,7 +35,7 @@ class PelanggaranController extends Controller
             case 'Sun':
                 $hari_ini = "Minggu";
             break;
-            case 'Mon':			
+            case 'Mon':
                 $hari_ini = "Senin";
             break;
             case 'Tue':
@@ -53,7 +54,7 @@ class PelanggaranController extends Controller
                 $hari_ini = "Sabtu";
             break;
             default:
-                $hari_ini = "Tidak di ketahui";		
+                $hari_ini = "Tidak di ketahui";
             break;
         }
         return  $hari_ini ;
@@ -64,12 +65,22 @@ class PelanggaranController extends Controller
         $hari = $this->hari($data[0]->created_at->format('D'));
         // dd(auth()->user());
         if(auth()->user()){
-            
+
             return view('detailPelanggaranUser',['data'=>$data,'tanggal'=>$tanggal,'hari'=>$hari]);
         }else{
-            echo("sdjas");
             return view('detailPelanggaran',['data'=>$data,'tanggal'=>$tanggal,'hari'=>$hari]);
         }
-        
+    }
+    public function getDetailDistance($data){
+        $data = PelanggaranDistance::where('id','=',$data)->get();
+        $tanggal = $this->tgl_indo($data[0]->created_at->format('Y-m-d'));
+        $hari = $this->hari($data[0]->created_at->format('D'));
+        // dd(auth()->user());
+        if(auth()->user()){
+
+            return view('detailPelanggaranDistanceUser',['data'=>$data,'tanggal'=>$tanggal,'hari'=>$hari]);
+        }else{
+            return view('detailPelanggaranDistance',['data'=>$data,'tanggal'=>$tanggal,'hari'=>$hari]);
+        }
     }
 }

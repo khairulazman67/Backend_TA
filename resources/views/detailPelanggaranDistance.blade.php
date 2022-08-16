@@ -25,14 +25,9 @@
                             <tbody>
                                 @foreach ($data as $i=>$dat)
                                     <tr>
-                                        <td class="py-3">Nama</td>
+                                        <td class="py-3">ID</td>
                                         <td class="py-3 pl-10">:</td>
-                                        <td class="py-3 w-80">{{$dat->mahasiswa->nama}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-3">NIM</td>
-                                        <td class="py-3 pl-10">:</td>
-                                        <td class="py-3">{{$dat->NIM}}</td>
+                                        <td class="py-3">{{$dat->id}}</td>
                                     </tr>
                                     <tr>
                                         <td class="py-3">Tanggal</td>

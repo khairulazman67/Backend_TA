@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Kelas;
 use App\Models\Pelanggaran;
+use App\Models\PelanggaranDistance;
 use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\Validator;
 use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
+// use Illuminate\Support\Facades\Http;
 
 class BerandaController extends Controller
 {
@@ -27,7 +30,7 @@ class BerandaController extends Controller
             'Desember'
         );
         $pecahkan = explode('-', $tanggal);
-        
+
         // variabel pecahkan 0 = tanggal
         // variabel pecahkan 1 = bulan
         // variabel pecahkan 2 = tahun
@@ -38,7 +41,7 @@ class BerandaController extends Controller
             case 'Sun':
                 $hari_ini = "Minggu";
             break;
-            case 'Mon':			
+            case 'Mon':
                 $hari_ini = "Senin";
             break;
             case 'Tue':
@@ -57,23 +60,94 @@ class BerandaController extends Controller
                 $hari_ini = "Sabtu";
             break;
             default:
-                $hari_ini = "Tidak di ketahui";		
+                $hari_ini = "Tidak di ketahui";
             break;
         }
         return  $hari_ini ;
     }
     public function index(){
         $pelanggaran = Pelanggaran::orderBy('id','desc')->get();
+        $pelanggaranSocialDistance = PelanggaranDistance::orderBy('id','desc')->get();
         $data = [];
         foreach($pelanggaran as $i => $v){
             $data[$i]=$v;
             $data[$i]['tanggal'] = $this->tgl_indo($data[$i]->created_at->format('Y-m-d'));
             $data[$i]['hari'] = $this->hari($data[$i]->created_at->format('D'));
         }
-        // dd($data);
-        $jumlah = count($pelanggaran);
-        // $tanggal = $this->tgl_indo($data[0]->created_at->format('Y-m-d'));
-        return view('beranda',['data'=>$data, 'jumlah'=>$jumlah]);
+
+        $jumlahMask = count($pelanggaran);
+        $jumlahDistance = $pelanggaranSocialDistance->sum->jumlah;
+
+        $date = Carbon::now()->subDays(7);
+        $dataPelanggaranWeek = Pelanggaran::where('created_at', '>=', $date)->get();
+
+        $dataGrafikPelanggaran = [];
+        foreach($dataPelanggaranWeek as $i => $v){
+            $hariini =$this->hari($v->created_at->format('D'));
+            if($hariini==='Senin'){
+                $getPelanggaran = Pelanggaran::orderBy('id','desc')->where('created_at',$v->created_at)->get();
+                $dataGrafikPelanggaran[0]=count($getPelanggaran);
+            }else{
+                if(!isset($dataGrafikPelanggaran[0])){
+                    $dataGrafikPelanggaran[0]=0;
+                }
+            }
+
+            if($hariini==='Selasa'){
+                $getPelanggaran = Pelanggaran::orderBy('id','desc')->where('created_at',$v->created_at)->get();
+                $dataGrafikPelanggaran[1]=count($getPelanggaran);
+            }else{
+                if(!isset($dataGrafikPelanggaran[1])){
+                    $dataGrafikPelanggaran[1]=0;
+                }
+            }
+
+            if($hariini==='Rabu'){
+                $getPelanggaran = Pelanggaran::orderBy('id','desc')->where('created_at',$v->created_at)->get();
+                $dataGrafikPelanggaran[2]=count($getPelanggaran)+1;
+            }else{
+                if(!isset($dataGrafikPelanggaran[2])){
+                    $dataGrafikPelanggaran[2]=0;
+                }
+            }
+            if($hariini==='Kamis'){
+                $getPelanggaran = Pelanggaran::orderBy('id','desc')->where('created_at',$v->created_at)->get();
+                $dataGrafikPelanggaran[3]=count($getPelanggaran)+1;
+            }else{
+                if(!isset($dataGrafikPelanggaran[3])){
+                    $dataGrafikPelanggaran[3]=0;
+                }
+            }
+
+            if($hariini==='Jumat'){
+                $getPelanggaran = Pelanggaran::orderBy('id','desc')->where('created_at',$v->created_at)->get();
+                $dataGrafikPelanggaran[4]=count($getPelanggaran)+1;
+            }else{
+                if(!isset($dataGrafikPelanggaran[4])){
+                    $dataGrafikPelanggaran[4]=0;
+                }
+            }
+
+            if($hariini==='Sabtu'){
+                $getPelanggaran = Pelanggaran::orderBy('id','desc')->where('created_at',$v->created_at)->get();
+                $dataGrafikPelanggaran[5]=count($getPelanggaran)+1;
+            }else{
+                if(!isset($dataGrafikPelanggaran[5])){
+                    $dataGrafikPelanggaran[5]=0;
+                }
+            }
+
+            if($hariini==='Minggu'){
+                $getPelanggaran = Pelanggaran::orderBy('id','desc')->where('created_at',$v->created_at)->get();
+                $dataGrafikPelanggaran[6]=count($getPelanggaran)+1;
+            }else{
+                if(!isset($dataGrafikPelanggaran[6])){
+                    $dataGrafikPelanggaran[6]=0;
+                }
+            }
+        };
+
+        return view('beranda',['data'=>$data, 'jumlahMask'=>$jumlahMask, 'jumlahDistance'=>$jumlahDistance, 'data2'=>$pelanggaranSocialDistance, 'dataGrafikPelanggaranMasker'=>$dataGrafikPelanggaran]);
     }
     public function cariPelanggar(Request $request){
         $val = Validator::make(
@@ -83,8 +157,8 @@ class BerandaController extends Controller
             ]
         );
         $datajumlah = Pelanggaran::orderBy('created_at','desc')->paginate(10);
-        $jumlah = count($datajumlah);
-    
+        $jumlahMask = count($datajumlah);
+
         $dataNIM = null;
         $NIM1 = Mahasiswa::where('nama','like','%'.$request->keyword.'%')->first();
         if($NIM1){
@@ -92,7 +166,7 @@ class BerandaController extends Controller
         }else{
             $dataNIM=null;
         }
-        
+
         $data = Pelanggaran::where('NIM', $request->keyword)
         ->orWhere('bukti', $request->keyword)->orWhere('NIM', $dataNIM)->paginate(10);
         $sendData = null;
@@ -107,7 +181,7 @@ class BerandaController extends Controller
         $tanggal = $this->tgl_indo($sendData[0]->created_at->format('Y-m-d'));
         $hari = $this->hari($sendData[0]->created_at->format('D'));
 
-        return view('beranda',['data'=>$sendData, 'jumlah'=>$jumlah,'tanggal'=>$tanggal,'hari'=>$hari]);
+        return view('beranda',['data'=>$sendData, 'jumlahMask'=>$jumlah,'tanggal'=>$tanggal,'hari'=>$hari]);
     }
     public function getDetail($data){
         $data = Pelanggaran::where('id','=',$data)->get();

@@ -12,9 +12,9 @@
     </div>
     <div class="w-full bg-secondary-300 h-2 mt-7"></div>
 
-    <button class="bg-primary-700 rounded-xl py-3 mt-4 px-3 text-white font-bold hover:bg-primary-900">
+    {{-- <button class="bg-primary-700 rounded-xl py-3 mt-4 px-3 text-white font-bold hover:bg-primary-900">
         <i class="fa-solid fa-plus mr-1 "></i> Tambah Data
-    </button>
+    </button> --}}
 
     <!-- table -->
     <div class="w-full h-auto shadow-xl shadow-gray-400 mt-5 ">
@@ -31,7 +31,7 @@
             <div class="flex justify-between mx-2 my-2 bg-red-500 text-white rounded-lg h-10 text-lg px-5">
                 <p class="my-auto">{{session()->get('failed')}}</p>
                 <i class="my-auto hover:text-gray-600 fas fa-times alert-del"></i>
-            </div>        
+            </div>
         @endif
         <!-- table -->
         <div class="my-5 pb-5 flex justify-center mx-auto">
@@ -123,7 +123,7 @@
                     x.parentElement.classList.add('hidden');
                 })
             );
-        
+
         window.addEventListener('DOMContentLoaded', () =>{
             const overlay = document.querySelector('#overlay')
             const deleteBtn = document.querySelector('#edit-btn')
