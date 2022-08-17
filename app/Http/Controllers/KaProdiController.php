@@ -67,12 +67,14 @@ class KaProdiController extends Controller
         $hari = null;
         $data = Pelanggaran::orderBy('created_at','desc')->paginate(10);
         $datapelanggaran = Pelanggaran::orderBy('created_at','desc')->get();
-        $jumlah = count($datapelanggaran);
-        if($jumlah>0){
-            $tanggal = $this->tgl_indo($data[0]->created_at->format('Y-m-d'));
-            $hari = $this->hari($data[0]->created_at->format('D'));
-        }
-        return view('pageKaProdi/berandaKaProdi',['data'=>$data, 'jumlah'=>$jumlah,'tanggal'=>$tanggal,'hari'=>$hari]);
+        $pelanggaranSocialDistance = PelanggaranDistance::orderBy('id','desc')->get();
+
+        $jumlahMask = count($datapelanggaran);
+        $jumlahDistance = $pelanggaranSocialDistance->sum->jumlah;
+
+        return view('pageKaProdi/berandaKaProdi',['data'=>$data,'data2'=>$pelanggaranSocialDistance, 'jumlahMask'=>$jumlahMask, 'jumlahDistance'=>$jumlahDistance,'tanggal'=>$tanggal,'hari'=>$hari]);
+
+        // return view('pageKaProdi/berandaKaProdi',['data'=>$data, 'jumlah'=>$jumlah,'tanggal'=>$tanggal,'hari'=>$hari]);
     }
     public function viewDataMahasiswa(){
         $dataMahasiswa = DB::table('mahasiswas')->join('kelas','mahasiswas.id_kelas','=','kelas.id')->paginate(10);

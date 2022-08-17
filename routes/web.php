@@ -31,7 +31,10 @@ Route::prefix('staf')->group(function (){
         Route::post('/cariPelanggar', [PelanggaranController::class, 'cariPelanggar']);
         Route::get('/dataMahasiswa', [StafController::class, 'viewDataMahasiswa']);
         Route::post('cariMahasiswaStaf',[StafController::class,'cariMahasiswa']);
+        Route::get('editMahasiswa/{data}',[StafController::class,'editMahasiswa']);
+        Route::post('editMahasiswa',[StafController::class,'prosesEditMahasiswa']);
         Route::delete('hapusPelanggaran/{data}',[StafController::class,'hapusPelanggaran']);
+        Route::delete('hapusPelanggaranDistance/{data}',[StafController::class,'hapusPelanggaranDistance']);
     });
 // });
 });

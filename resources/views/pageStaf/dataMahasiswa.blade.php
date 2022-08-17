@@ -85,7 +85,12 @@
                                             <div class="text-xl text-center">{{$dat->nm_kelas}}</div>
                                         </td>
                                         <td class="px-6 py-4 text-center">
-                                            <a href="#" class="px-6 py-1 text-sm text-white bg-yellow-500 hover:bg-yellow-600 rounded-lg" id="edit-btn">Edit Data</a>
+                                            <form action="{{url('staf/editMahasiswa/'.$dat->NIM)}}" method="GET">
+                                                @csrf
+                                                <button
+                                                    class="px-3 py-1 text-xs text-white bg-primary-800 hover:bg-primary-900 rounded-lg">Edit Data</button>
+                                            </form>
+                                            {{-- <a href="" class="px-6 py-1 text-sm text-white bg-yellow-500 hover:bg-yellow-600 rounded-lg" id="edit-btn">Edit Data</a> --}}
                                         </td>
                                     </tr>
                                 @endforeach

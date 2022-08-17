@@ -12,6 +12,8 @@ class mahasiswa extends Model
         'created_at',
         'updated_at'
     ];
+
+    protected $primaryKey = 'NIM';
     // public function Jurusan(){
     //     return $this->belongsTo(Jurusan::class,'id_jurusan','id');
     // }
@@ -21,11 +23,11 @@ class mahasiswa extends Model
     public function Kelas(){
         return $this->belongsTo(Kelas::class,'id_kelas','id');
     }
-    
+
     public function Pelanggaran(){
         return $this->hasMany(Kelas::class,'NIM');
     }
-    
-    
+
+
 
 }

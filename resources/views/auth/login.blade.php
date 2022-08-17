@@ -41,15 +41,15 @@
                                 {{ __('Log in') }}
                             </button>
                         </div>
-                        
+
                         <div class="absolute inset-y-0 -right-5">
                             <img src="{{asset('img/Iluslator.png') }}" alt="" class="mt-11 ml-8 w-[500px]">
-                        </div>  
-                    
-                    
+                        </div>
+
+
                 </form>
             </div>
-            
+
         </div>
     </div>
 </body>

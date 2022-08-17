@@ -19,9 +19,9 @@
                 <a href="{{ url()->previous() }}" class="text-lg text-primary-800 hover:text-gray-900"><i class="fas fa-arrow-left mr-1"></i>Kembali</a>
                 <div class="flex flex-row">
                     <div>
-                        <h1 class="text-primary-900 font-bold text-2xl mt-6">Detail Pelanggaran</h1>
+                        <h1 class="text-primary-900 font-bold text-2xl mt-6">Detail Pelanggaran Physical Distancing</h1>
                         <div class="w-full bg-primary-800 rounded-full h-1 mt-2"></div>
-                        <table class="table-auto mt-3 text-xl">
+                        <table class="table-auto mt-3 text-lg">
                             <tbody>
                                 @foreach ($data as $i=>$dat)
                                     <tr>
@@ -31,8 +31,8 @@
                                     </tr>
                                     <tr>
                                         <td class="py-3">Tanggal</td>
-                                        <td class="py-3 pl-10">:</td>
-                                        <td class="py-3">{{$hari.', '.$tanggal}}</td>
+                                        <td class="py-3 pl-10 ">:</td>
+                                        <td class="py-3 w-96">{{$hari.', '.$tanggal}}</td>
                                     </tr>
                                     <tr>
                                         <td class="py-3">Waktu</td>
@@ -45,7 +45,7 @@
 
                     </div>
                     <div class=" w-full h-full">
-                        <img src="{{asset('imgpelanggaran/'.$data[0]->bukti) }}" alt="" class="w-[600px] rounded-xl m-auto">
+                        <img src="{{asset('imgpelanggaran/'.$data[0]->bukti) }}" alt="" class="w-[500px] rounded-xl m-auto">
                     </div>
                 </div>
             </div>

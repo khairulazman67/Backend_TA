@@ -367,24 +367,26 @@
                         label: 'Physical Distancing',
                         backgroundColor: 'rgb(54, 162, 235)',
                         borderColor: 'rgb(54, 162, 235)',
-                        data: [1, 20, 3, 23, 26, 32, 40],
+                        data: [
+                            @foreach($dataGrafikPelanggaranDistance as $data)
+                                {{$data}},
+                            @endforeach
+                        ],
                     }
                 ]
             };
 
             const data2 = {
                 labels: [
-                    'Red',
-                    'Blue',
-                    'Yellow'
+                    'Masker',
+                    'Physical Distancing'
                 ],
                 datasets: [{
                     label: 'My First Dataset',
-                    data: [300, 50, 100],
+                    data: [{{$jumlahMask}}, {{$jumlahDistance}}],
                     backgroundColor: [
                     'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)'
+                    'rgb(54, 162, 235)'
                     ],
                     hoverOffset: 4
                 }]

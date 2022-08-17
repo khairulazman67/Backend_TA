@@ -82,72 +82,82 @@ class BerandaController extends Controller
         $dataPelanggaranWeek = Pelanggaran::where('created_at', '>=', $date)->get();
 
         $dataGrafikPelanggaran = [];
+        $dataGrafikPelanggaranDistance = [];
         foreach($dataPelanggaranWeek as $i => $v){
             $hariini =$this->hari($v->created_at->format('D'));
+            $getPelanggaran = Pelanggaran::orderBy('id','desc')->where('created_at',$v->created_at)->get();
+            $getPelanggaranDistance = PelanggaranDistance::orderBy('id','desc')->where('created_at',$v->created_at)->get();
             if($hariini==='Senin'){
-                $getPelanggaran = Pelanggaran::orderBy('id','desc')->where('created_at',$v->created_at)->get();
                 $dataGrafikPelanggaran[0]=count($getPelanggaran);
+                $dataGrafikPelanggaranDistance[0] = $pelanggaranSocialDistance->sum->jumlah;
             }else{
                 if(!isset($dataGrafikPelanggaran[0])){
                     $dataGrafikPelanggaran[0]=0;
+                    $dataGrafikPelanggaranDistance[0] = 0;
                 }
             }
 
             if($hariini==='Selasa'){
-                $getPelanggaran = Pelanggaran::orderBy('id','desc')->where('created_at',$v->created_at)->get();
                 $dataGrafikPelanggaran[1]=count($getPelanggaran);
+                $dataGrafikPelanggaranDistance[1] = $pelanggaranSocialDistance->sum->jumlah;
             }else{
                 if(!isset($dataGrafikPelanggaran[1])){
                     $dataGrafikPelanggaran[1]=0;
+                    $dataGrafikPelanggaranDistance[1] = 0;
                 }
             }
 
             if($hariini==='Rabu'){
-                $getPelanggaran = Pelanggaran::orderBy('id','desc')->where('created_at',$v->created_at)->get();
                 $dataGrafikPelanggaran[2]=count($getPelanggaran)+1;
+                $dataGrafikPelanggaranDistance[2] = $pelanggaranSocialDistance->sum->jumlah;
             }else{
                 if(!isset($dataGrafikPelanggaran[2])){
                     $dataGrafikPelanggaran[2]=0;
+                    $dataGrafikPelanggaranDistance[2] = 0;
                 }
             }
             if($hariini==='Kamis'){
-                $getPelanggaran = Pelanggaran::orderBy('id','desc')->where('created_at',$v->created_at)->get();
                 $dataGrafikPelanggaran[3]=count($getPelanggaran)+1;
+                $dataGrafikPelanggaranDistance[3] = $pelanggaranSocialDistance->sum->jumlah;
             }else{
                 if(!isset($dataGrafikPelanggaran[3])){
                     $dataGrafikPelanggaran[3]=0;
+                    $dataGrafikPelanggaranDistance[3] = 0;
                 }
             }
 
             if($hariini==='Jumat'){
-                $getPelanggaran = Pelanggaran::orderBy('id','desc')->where('created_at',$v->created_at)->get();
                 $dataGrafikPelanggaran[4]=count($getPelanggaran)+1;
+                $dataGrafikPelanggaranDistance[4] = $pelanggaranSocialDistance->sum->jumlah;
             }else{
                 if(!isset($dataGrafikPelanggaran[4])){
                     $dataGrafikPelanggaran[4]=0;
+                    $dataGrafikPelanggaranDistance[4] = 0;
                 }
             }
 
             if($hariini==='Sabtu'){
-                $getPelanggaran = Pelanggaran::orderBy('id','desc')->where('created_at',$v->created_at)->get();
                 $dataGrafikPelanggaran[5]=count($getPelanggaran)+1;
+                $dataGrafikPelanggaranDistance[5] = $pelanggaranSocialDistance->sum->jumlah;
             }else{
                 if(!isset($dataGrafikPelanggaran[5])){
                     $dataGrafikPelanggaran[5]=0;
+                    $dataGrafikPelanggaranDistance[5] = 0;
                 }
             }
 
             if($hariini==='Minggu'){
-                $getPelanggaran = Pelanggaran::orderBy('id','desc')->where('created_at',$v->created_at)->get();
                 $dataGrafikPelanggaran[6]=count($getPelanggaran)+1;
+                $dataGrafikPelanggaranDistance[6] = $pelanggaranSocialDistance->sum->jumlah;
             }else{
                 if(!isset($dataGrafikPelanggaran[6])){
                     $dataGrafikPelanggaran[6]=0;
+                    $dataGrafikPelanggaranDistance[6] = 0;
                 }
             }
         };
-
-        return view('beranda',['data'=>$data, 'jumlahMask'=>$jumlahMask, 'jumlahDistance'=>$jumlahDistance, 'data2'=>$pelanggaranSocialDistance, 'dataGrafikPelanggaranMasker'=>$dataGrafikPelanggaran]);
+        // dd($dataGrafikPelanggaranDistance);
+        return view('beranda',['data'=>$data, 'jumlahMask'=>$jumlahMask, 'jumlahDistance'=>$jumlahDistance, 'data2'=>$pelanggaranSocialDistance, 'dataGrafikPelanggaranMasker'=>$dataGrafikPelanggaran, 'dataGrafikPelanggaranDistance'=>$dataGrafikPelanggaranDistance]);
     }
     public function cariPelanggar(Request $request){
         $val = Validator::make(

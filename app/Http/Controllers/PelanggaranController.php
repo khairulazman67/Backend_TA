@@ -78,7 +78,7 @@ class PelanggaranController extends Controller
         // dd(auth()->user());
         if(auth()->user()){
 
-            return view('detailPelanggaranDistanceUser',['data'=>$data,'tanggal'=>$tanggal,'hari'=>$hari]);
+            return view('detailPelanggaranDistance',['data'=>$data,'tanggal'=>$tanggal,'hari'=>$hari]);
         }else{
             return view('detailPelanggaranDistance',['data'=>$data,'tanggal'=>$tanggal,'hari'=>$hari]);
         }

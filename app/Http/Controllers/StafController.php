@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Kelas;
 use App\Models\Pelanggaran;
+use App\Models\PelanggaranDistance;
 use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
+
 class StafController extends Controller
 {
-    
+
     // public function __construct(){
     //     $this->middleware('stafProdi');
     // }
@@ -31,7 +33,7 @@ class StafController extends Controller
             'Desember'
         );
         $pecahkan = explode('-', $tanggal);
-        
+
         // variabel pecahkan 0 = tanggal
         // variabel pecahkan 1 = bulan
         // variabel pecahkan 2 = tahun
@@ -42,7 +44,7 @@ class StafController extends Controller
             case 'Sun':
                 $hari_ini = "Minggu";
             break;
-            case 'Mon':			
+            case 'Mon':
                 $hari_ini = "Senin";
             break;
             case 'Tue':
@@ -61,25 +63,25 @@ class StafController extends Controller
                 $hari_ini = "Sabtu";
             break;
             default:
-                $hari_ini = "Tidak di ketahui";		
+                $hari_ini = "Tidak di ketahui";
             break;
         }
         return  $hari_ini ;
     }
+
     public function index(){
-        
-        // dd($data);
         $tanggal = null;
         $hari = null;
         $data = Pelanggaran::orderBy('created_at','desc')->paginate(10);
         $datapelanggaran = Pelanggaran::orderBy('created_at','desc')->get();
-        $jumlah = count($datapelanggaran);
-        if($jumlah>0){
-            $tanggal = $this->tgl_indo($data[0]->created_at->format('Y-m-d'));
-            $hari = $this->hari($data[0]->created_at->format('D'));
-        }
-        return view('pageStaf/berandaStaf',['data'=>$data, 'jumlah'=>$jumlah,'tanggal'=>$tanggal,'hari'=>$hari]);
+        $pelanggaranSocialDistance = PelanggaranDistance::orderBy('id','desc')->get();
+
+        $jumlahMask = count($datapelanggaran);
+        $jumlahDistance = $pelanggaranSocialDistance->sum->jumlah;
+
+        return view('pageStaf/berandaStaf',['data'=>$data,'data2'=>$pelanggaranSocialDistance, 'jumlahMask'=>$jumlahMask, 'jumlahDistance'=>$jumlahDistance,'tanggal'=>$tanggal,'hari'=>$hari]);
     }
+
     public function cariPelanggar(Request $request){
         $val = Validator::make(
             $request->all(),
@@ -89,7 +91,7 @@ class StafController extends Controller
         );
         $datajumlah = Pelanggaran::orderBy('created_at','desc')->paginate(10);
         $jumlah = count($datajumlah);
-    
+
         $dataNIM = null;
         $NIM1 = Mahasiswa::where('nama','like','%'.$request->keyword.'%')->first();
         if($NIM1){
@@ -97,7 +99,7 @@ class StafController extends Controller
         }else{
             $dataNIM=null;
         }
-        
+
         $data = Pelanggaran::where('NIM', $request->keyword)
         ->orWhere('bukti', $request->keyword)->orWhere('NIM', $dataNIM)->paginate(10);
         $sendData = null;
@@ -138,6 +140,48 @@ class StafController extends Controller
         }else{
             return redirect('staf/')->with('error', 'Terjadi kesalahan saat menghapus data');
         }
+    }
+    public function hapusPelanggaranDistance($data){
+        $delete = DB::table('pelanggaran_distances')->where('id','=',$data)->delete();
+        if($delete){
+            return redirect('staf/')->with('successDistance', 'Data berhasil dihapus');
+        }else{
+            return redirect('staf/')->with('errorDistance', 'Terjadi kesalahan saat menghapus data');
+        }
+    }
+
+    public function editMahasiswa($data){
+        $kelas = Kelas::get();
+
+        $oldData = Mahasiswa::where('NIM', $data)->first();
+
+        return view('pageStaf/editMahasiswa',['kelas'=>$kelas, 'oldData'=>$oldData]);
+    }
+
+    public function prosesEditMahasiswa(Request $request){
+        $val = Validator::make(
+            $request->all(),
+            [
+                'NIM' => 'required',
+                'nama' => 'required',
+                'kelas' => 'required',
+            ]
+        );
+
+        // dd($request);
+        $kelas = Kelas::get();
+
+        $mahasiswa = Mahasiswa::findOrfail($request->NIM);
+        $mahasiswa->nama = $request->nama;
+        $mahasiswa->id_kelas = $request->kelas;
+        $mahasiswa->update();
+
+        if($mahasiswa){
+            return redirect( 'staf/editMahasiswa/'.$request->NIM )->with('success', 'Data boat berhasil diupdate');
+        }else{
+            return redirect('staf/editMahasiswa/'.$request->NIM)->with('failed', 'Terjadi kesalahan saat update data boat');
+        }
+
     }
 
 }
